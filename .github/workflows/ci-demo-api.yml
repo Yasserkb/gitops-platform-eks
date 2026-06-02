@@ -40,7 +40,7 @@ jobs:
         run: docker build -t ghcr.io/${{ github.repository_owner }}/demo-api:${{ github.sha }} .
 
       - name: Scan image with Trivy
-        uses: aquasecurity/trivy-action@0.36.0
+        uses: aquasecurity/trivy-action@v0.36.0
         with:
           image-ref: ghcr.io/${{ github.repository_owner }}/demo-api:${{ github.sha }}
           format: sarif
@@ -75,3 +75,4 @@ jobs:
         run: helm lint apps/demo-api/chart -f environments/dev/demo-api/values.yaml
       - name: Helm template
         run: helm template demo-api apps/demo-api/chart -f environments/dev/demo-api/values.yaml > rendered.yaml
+
