@@ -1,0 +1,35 @@
+# Operating system / editor files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.iml
+
+# Java / Maven / Gradle generated files
+**/target/
+**/build/
+**/.gradle/
+.gradle/
+
+# Terraform local state and plans
+**/.terraform/
+*.tfstate
+*.tfstate.*
+*.tfplan
+tfplan
+crash.log
+crash.*.log
+
+# Kubernetes / Helm generated output
+rendered.yaml
+*.rendered.yaml
+
+# Logs and temporary files
+*.log
+*.tmp
+*.bak
+.env
+.env.*
+
+# Local screenshots and recordings before curation
+recordings/
