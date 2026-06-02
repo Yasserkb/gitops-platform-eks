@@ -1,0 +1,36 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: demo-api-environments
+  namespace: argocd
+spec:
+  generators:
+    - list:
+        elements:
+          - env: dev
+            namespace: demo-api-dev
+          - env: staging
+            namespace: demo-api-staging
+          - env: prod
+            namespace: demo-api-prod
+  template:
+    metadata:
+      name: 'demo-api-{{env}}'
+    spec:
+      project: platform
+      source:
+        repoURL: https://github.com/Yasserkb/gitops-platform-eks.git
+        targetRevision: main
+        path: apps/demo-api/chart
+        helm:
+          valueFiles:
+            - ../../../environments/{{env}}/demo-api/values.yaml
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: '{{namespace}}'
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
