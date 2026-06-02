@@ -1,0 +1,25 @@
+grafana:
+  defaultDashboardsEnabled: true
+  sidecar:
+    dashboards:
+      enabled: true
+      label: grafana_dashboard
+  persistence:
+    enabled: true
+    size: 10Gi
+
+prometheus:
+  prometheusSpec:
+    retention: 15d
+    serviceMonitorSelectorNilUsesHelmValues: false
+    ruleSelectorNilUsesHelmValues: false
+    resources:
+      requests:
+        cpu: 300m
+        memory: 1Gi
+      limits:
+        cpu: 1000m
+        memory: 2Gi
+
+alertmanager:
+  enabled: true

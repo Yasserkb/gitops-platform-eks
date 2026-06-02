@@ -1,0 +1,41 @@
+{
+  "annotations": {
+    "list": []
+  },
+  "editable": true,
+  "panels": [
+    {
+      "type": "stat",
+      "title": "Demo API Requests",
+      "targets": [
+        {
+          "expr": "sum(rate(demo_api_platform_requests_total[5m]))"
+        }
+      ],
+      "gridPos": {
+        "x": 0,
+        "y": 0,
+        "w": 8,
+        "h": 6
+      }
+    },
+    {
+      "type": "timeseries",
+      "title": "Pod CPU",
+      "targets": [
+        {
+          "expr": "sum(rate(container_cpu_usage_seconds_total{namespace=~\"demo-api.*\"}[5m])) by (pod)"
+        }
+      ],
+      "gridPos": {
+        "x": 8,
+        "y": 0,
+        "w": 16,
+        "h": 6
+      }
+    }
+  ],
+  "schemaVersion": 39,
+  "title": "Yasser GitOps Platform Overview",
+  "version": 1
+}
