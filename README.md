@@ -30,6 +30,10 @@ The repository can be reviewed as an architecture/code sample, and the Kubernete
 - kube-prometheus-stack configuration and Grafana dashboard-as-code.
 - Runbooks, security notes, and architecture decisions.
 
+## Evidence and honest scope
+
+Start with [current state](docs/current-state.md), then review the [gap analysis](docs/gap-analysis.md) and [known limitations](docs/known-limitations.md). These documents distinguish implemented controls from work that requires a live AWS account. The EKS API is private by default; enabling public access requires explicitly restricted CIDRs and rejects `0.0.0.0/0`.
+
 ## Architecture
 
 ```mermaid

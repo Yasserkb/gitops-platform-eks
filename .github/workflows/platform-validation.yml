@@ -1,0 +1,40 @@
+name: platform-validation
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  security-events: write
+
+jobs:
+  terraform-and-manifests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.9.8
+      - name: Terraform format
+        run: terraform fmt -check -recursive infra/terraform
+      - name: Terraform init without backend
+        working-directory: infra/terraform/environments/dev
+        run: terraform init -backend=false
+      - name: Terraform validate
+        working-directory: infra/terraform/environments/dev
+        run: terraform validate
+      - name: Render Helm chart
+        uses: azure/setup-helm@v4
+      - run: helm lint apps/demo-api/chart -f environments/dev/demo-api/values.yaml
+      - run: helm template demo-api apps/demo-api/chart -f environments/dev/demo-api/values.yaml > rendered.yaml
+      - name: Trivy IaC and secret scan
+        uses: aquasecurity/trivy-action@v0.36.0
+        with:
+          scan-type: fs
+          scan-ref: .
+          scanners: vuln,secret,misconfig
+          severity: HIGH,CRITICAL
+          exit-code: "1"

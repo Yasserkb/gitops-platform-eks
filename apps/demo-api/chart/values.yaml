@@ -66,6 +66,8 @@ podDisruptionBudget:
 
 networkPolicy:
   enabled: true
+  ingressNamespace: ingress-nginx
+  allowHttpsEgress: false
 
 serviceMonitor:
   enabled: true

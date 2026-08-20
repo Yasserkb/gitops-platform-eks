@@ -11,17 +11,25 @@ spec:
   policyTypes: ["Ingress", "Egress"]
   ingress:
     - from:
-        - namespaceSelector: {}
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: {{ .Values.networkPolicy.ingressNamespace | quote }}
       ports:
         - protocol: TCP
           port: 8080
   egress:
     - to:
-        - namespaceSelector: {}
-    - to:
-        - ipBlock:
-            cidr: 0.0.0.0/0
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: kube-system
       ports:
+        - protocol: UDP
+          port: 53
+        - protocol: TCP
+          port: 53
+    {{- if .Values.networkPolicy.allowHttpsEgress }}
+    - ports:
         - protocol: TCP
           port: 443
+    {{- end }}
 {{- end }}

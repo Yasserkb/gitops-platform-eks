@@ -5,8 +5,11 @@ module "eks" {
   name               = var.name
   kubernetes_version = var.cluster_version
 
-  endpoint_public_access  = true
-  endpoint_private_access = true
+  endpoint_public_access       = var.endpoint_public_access
+  endpoint_private_access      = true
+  endpoint_public_access_cidrs = var.endpoint_public_access_cidrs
+
+  enabled_log_types = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
 
   vpc_id     = var.vpc_id
   subnet_ids = var.private_subnets
@@ -23,7 +26,7 @@ module "eks" {
 
   eks_managed_node_groups = {
     platform = {
-      instance_types = ["t3.large"]
+      instance_types = var.node_instance_types
       min_size       = 2
       max_size       = 6
       desired_size   = 2
